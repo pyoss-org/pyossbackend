@@ -18,4 +18,21 @@ public class TimeSlot {
         this.available = available;
     }
 
+    public static TimeSlot createFor(LocalDateTime from, int durationInMinutes){
+        return new TimeSlot(from, from.plusMinutes(durationInMinutes), false);
+    }
+
+
+    public LocalDateTime getTo() {
+        return to;
+    }
+
+    public boolean endsAfter(int closingHour) {
+        return closingHour < to.getHour() ||
+                (closingHour == to.getHour() && to.getMinute() > 0) ;
+    }
+
+    public LocalDateTime getFrom() {
+        return from;
+    }
 }

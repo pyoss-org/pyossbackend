@@ -3,6 +3,7 @@ package pyoss.agenda;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +19,26 @@ public class Day {
         this.slots = slots;
     }
 
-    //TODO generate timeslots between open and closing
     public static Day createFor(LocalDate day, int openingTime, int closingTime) {
-        return new Day(day, new ArrayList<>());
+        List<TimeSlot> slots = new ArrayList<>();
+
+        LocalDateTime start = day.atTime(openingTime, 0);
+        TimeSlot nextSlot = TimeSlot.createFor(start, 30);
+        while (!nextSlot.endsAfter(closingTime)) {
+            slots.add(nextSlot);
+            start = start.plusMinutes(30);
+            nextSlot = TimeSlot.createFor(start, 30);
+        }
+
+
+        return new Day(day, slots);
     }
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public List<TimeSlot> getSlots() {
+        return slots;
     }
 }

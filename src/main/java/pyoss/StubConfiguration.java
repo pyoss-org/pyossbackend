@@ -25,11 +25,6 @@ public class StubConfiguration {
         return new MongoClient("localhost");
     }
 
-//    @Bean
-//    public TimeSlotRepository timeSlotRepository() {
-//        return new TimeSlotRepositoryStub();
-//    }
-
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurerAdapter() {
