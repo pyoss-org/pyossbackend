@@ -19,7 +19,7 @@ public class TimeSlot {
     }
 
     public static TimeSlot createFor(LocalDateTime from, int durationInMinutes){
-        return new TimeSlot(from, from.plusMinutes(durationInMinutes), false);
+        return new TimeSlot(from, from.plusMinutes(durationInMinutes), true);
     }
 
 

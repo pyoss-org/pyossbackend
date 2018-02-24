@@ -1,9 +1,7 @@
-package pyoss;
+package pyoss.agenda;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pyoss.agenda.Agenda;
-import pyoss.agenda.Day;
 
 import java.time.LocalDateTime;
 
