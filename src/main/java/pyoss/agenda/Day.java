@@ -41,4 +41,17 @@ public class Day {
     public List<TimeSlot> getSlots() {
         return slots;
     }
+
+    public void book(BookingRequest bookingRequest) {
+        slots.stream()
+                .filter(timeSlot -> equalSlot(timeSlot, bookingRequest))
+                .findFirst()
+                .ifPresent(TimeSlot::book);
+
+    }
+
+    private boolean equalSlot(TimeSlot timeSlot, BookingRequest bookingRequest) {
+        return timeSlot.getFrom().getHour() == bookingRequest.fromH()
+        && timeSlot.getFrom().getMinute() == bookingRequest.fromM();
+    }
 }

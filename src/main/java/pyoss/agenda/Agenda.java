@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class Agenda {
 
@@ -46,13 +47,36 @@ public class Agenda {
 
     public Day firstAvailableDayAfter(LocalDateTime check) {
         if (isBeforeClosing(check)) {
-            return Day.createFor(LocalDate.now(), openingTime, closingTime);
+            return getOrCreate(check.toLocalDate());
         } else {
-            return Day.createFor(LocalDate.now().plusDays(1), openingTime, closingTime);
+            return getOrCreate(check.toLocalDate().plusDays(1));
         }
+    }
+
+    private Day getOrCreate(LocalDate localDate) {
+        return dayInAgenda(localDate)
+                .orElseGet(() -> Day.createFor(localDate, openingTime, closingTime));
     }
 
     private boolean isBeforeClosing(LocalDateTime check) {
         return check.getHour() < closingTime;
+    }
+
+    public void doBooking(BookingRequest bookingRequest) {
+        LocalDate dateToBook = LocalDate.now();//TODO should come from request
+        if(!isBeforeClosing(LocalDateTime.now())){
+            dateToBook = dateToBook.plusDays(1);//wont be necessary
+        }
+        Day day = getOrCreate(dateToBook);
+        day.book(bookingRequest);
+        if(!days.contains(day)){
+            days.add(day);
+        }
+    }
+
+    private Optional<Day> dayInAgenda(LocalDate dateToBook) {
+        return days.stream()
+                .filter(day -> day.getDate().equals(dateToBook))
+                .findFirst();
     }
 }

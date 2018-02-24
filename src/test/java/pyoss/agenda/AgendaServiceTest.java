@@ -46,6 +46,13 @@ public class AgendaServiceTest {
         assertNotEquals(agenda.getId(), agenda2.getId());
     }
 
+
+    @Test
+    public void doBooking_(){
+
+    }
+
+
     private Agenda createNew() {
         return agendaService.getOrCreateAgendaFor(UUID.randomUUID().toString());
     }

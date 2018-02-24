@@ -22,4 +22,8 @@ public class AgendaRepository {
     public void insert(Agenda agenda) {
         mongoTemplate.insert(agenda, "agendas");
     }
+
+    public void update(Agenda agenda) {
+        mongoTemplate.save(agenda, "agendas");
+    }
 }

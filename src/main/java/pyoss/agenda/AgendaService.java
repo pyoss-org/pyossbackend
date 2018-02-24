@@ -28,4 +28,10 @@ public class AgendaService {
             return existingAgenda;
         }
     }
+
+    public void doBooking(BookingRequest bookingRequest) {
+        Agenda agenda = getOrCreateAgendaFor("kapperx");
+        agenda.doBooking(bookingRequest);
+        agendaRepository.update(agenda);
+    }
 }

@@ -35,4 +35,8 @@ public class TimeSlot {
     public LocalDateTime getFrom() {
         return from;
     }
+
+    public void book() {
+        this.available = false;
+    }
 }
