@@ -39,4 +39,8 @@ public class TimeSlot {
     public void book() {
         this.available = false;
     }
+
+    public boolean isAvailable() {
+        return available;
+    }
 }

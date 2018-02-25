@@ -46,11 +46,17 @@ public class Agenda {
     }
 
     public Day firstAvailableDayAfter(LocalDateTime check) {
+        LocalDate dateToCheck = check.toLocalDate();
         if (isBeforeClosing(check)) {
-            return getOrCreate(check.toLocalDate());
-        } else {
-            return getOrCreate(check.toLocalDate().plusDays(1));
+            dateToCheck = dateToCheck.plusDays(1);
         }
+
+        Day day = getOrCreate(dateToCheck);
+        while(!day.hasAvailableSlot()){
+            dateToCheck = dateToCheck.plusDays(1);
+            day = getOrCreate(dateToCheck);
+        }
+        return day;
     }
 
     public List<Day> availableDaysAfter(LocalDateTime check) {

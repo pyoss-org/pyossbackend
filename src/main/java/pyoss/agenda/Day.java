@@ -54,4 +54,9 @@ public class Day {
         return timeSlot.getFrom().getHour() == bookingRequest.fromH()
         && timeSlot.getFrom().getMinute() == bookingRequest.fromM();
     }
+
+    public boolean hasAvailableSlot() {
+        return slots.stream()
+                .anyMatch(TimeSlot::isAvailable);
+    }
 }
