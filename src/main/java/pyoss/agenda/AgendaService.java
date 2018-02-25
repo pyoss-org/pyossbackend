@@ -8,10 +8,8 @@ import java.time.LocalDateTime;
 @Service
 public class AgendaService {
 
-
     @Autowired
     private AgendaRepository agendaRepository;
-
 
     public Day firstDayWithAvailabilityAfter(LocalDateTime check) {
         Agenda agenda = getOrCreateAgendaFor("kapperx");

@@ -5,10 +5,11 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
-import pyoss.agenda.Agenda;
 
 @Component
 public class AgendaRepository {
+
+    private static final String COLLECTION_NAME = "agendas";
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -16,14 +17,14 @@ public class AgendaRepository {
 
     public Agenda getFor(String ownerName) {
         Query ownerQuery = new Query().addCriteria(Criteria.where("ownerName").is(ownerName));
-        return mongoTemplate.findOne(ownerQuery, Agenda.class, "agendas");
+        return mongoTemplate.findOne(ownerQuery, Agenda.class, COLLECTION_NAME);
     }
 
     public void insert(Agenda agenda) {
-        mongoTemplate.insert(agenda, "agendas");
+        mongoTemplate.insert(agenda, COLLECTION_NAME);
     }
 
     public void update(Agenda agenda) {
-        mongoTemplate.save(agenda, "agendas");
+        mongoTemplate.save(agenda, COLLECTION_NAME);
     }
 }
