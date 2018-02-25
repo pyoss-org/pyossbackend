@@ -53,6 +53,10 @@ public class Agenda {
         }
     }
 
+    public List<Day> availableDaysAfter(LocalDateTime check) {
+        return List.of(firstAvailableDayAfter(check));
+    }
+
     private Day getOrCreate(LocalDate localDate) {
         return dayInAgenda(localDate)
                 .orElseGet(() -> Day.createFor(localDate, openingTime, closingTime));

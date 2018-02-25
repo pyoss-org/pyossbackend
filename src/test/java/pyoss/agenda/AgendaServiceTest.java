@@ -4,13 +4,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import pyoss.agenda.Agenda;
-import pyoss.agenda.AgendaService;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static java.time.LocalDate.now;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.*;
 
@@ -21,6 +23,10 @@ public class AgendaServiceTest {
 
     @Autowired
     private AgendaService agendaService;
+
+    private void assertEpochDay(LocalDate expected, LocalDate actual) {
+        assertEquals(expected.toEpochDay(), actual.toEpochDay());
+    }
 
     @Test
     public void getOrCreate_notExisting_createsNew() {
@@ -46,12 +52,25 @@ public class AgendaServiceTest {
         assertNotEquals(agenda.getId(), agenda2.getId());
     }
 
-
     @Test
-    public void doBooking_(){
-
+    public void dayPageWithAvailabilityAfter_today_generatesToday() {
+        Page<Day> page = agendaService.dayPageWithAvailabilityAfter(LocalDateTime.now(), 0);
+        assertEpochDay(now(), firstDateIn(page));
     }
 
+    @Test
+    public void dayPageWithAvailabilityAfter_today_generatesTomorrow() {
+        Page<Day> page = agendaService.dayPageWithAvailabilityAfter(LocalDateTime.now(), 1);
+        assertEpochDay(now().plusDays(1), firstDateIn(page));
+    }
+
+    private LocalDate firstDateIn(Page<Day> page) {
+        return firstPageOf(page).getDate();
+    }
+
+    private Day firstPageOf(Page<Day> page) {
+        return page.getContent().get(0);
+    }
 
     private Agenda createNew() {
         return agendaService.getOrCreateAgendaFor(UUID.randomUUID().toString());

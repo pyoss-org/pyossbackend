@@ -1,19 +1,25 @@
 package pyoss.agenda;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static pyoss.pages.Pager.createPageFor;
+import static pyoss.pages.Pager.onePageRequest;
 
 @Service
 public class AgendaService {
+
+    private static final String OWNER_NAME = "kapperx";
 
     @Autowired
     private AgendaRepository agendaRepository;
 
     public Day firstDayWithAvailabilityAfter(LocalDateTime check) {
-        Agenda agenda = getOrCreateAgendaFor("kapperx");
-        return agenda.firstAvailableDayAfter(check);
+        return agenda().firstAvailableDayAfter(check);
     }
 
     Agenda getOrCreateAgendaFor(String ownerName) {
@@ -28,8 +34,17 @@ public class AgendaService {
     }
 
     public void doBooking(BookingRequest bookingRequest) {
-        Agenda agenda = getOrCreateAgendaFor("kapperx");
+        Agenda agenda = agenda();
         agenda.doBooking(bookingRequest);
         agendaRepository.update(agenda);
     }
+
+    public Page<Day> dayPageWithAvailabilityAfter(LocalDateTime check, int offset) {
+        return createPageFor(onePageRequest(offset), agenda().availableDaysAfter(check.plusDays(offset)));
+    }
+
+    private Agenda agenda() {
+        return getOrCreateAgendaFor(OWNER_NAME);
+    }
+
 }

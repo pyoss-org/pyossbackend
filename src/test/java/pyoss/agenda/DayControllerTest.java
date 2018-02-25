@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
 import pyoss.exception.NotFoundException;
 
 import java.time.LocalDateTime;
@@ -18,16 +19,17 @@ public class DayControllerTest {
     private AgendaService agendaServiceMock;
 
     @Mock
-    private Day dayMock;
+    private Page<Day> pageMock;
 
     @Test
+
     public void nextDayWithAvailableSlot_nextAvailable_callsServices_firstDayWithAvailabilityAfter() {
         DayController controller = new DayController(agendaServiceMock);
-        when(agendaServiceMock.firstDayWithAvailabilityAfter(any(LocalDateTime.class))).thenReturn(dayMock);
+        when(agendaServiceMock.dayPageWithAvailabilityAfter(any(LocalDateTime.class), anyInt())).thenReturn(pageMock);
 
-        controller.nextDayWithAvailableSlot(true);
+        controller.nextDayWithAvailableSlot(true, 0);
 
-        verify(agendaServiceMock, times(1)).firstDayWithAvailabilityAfter(any(LocalDateTime.class));
+        verify(agendaServiceMock, times(1)).dayPageWithAvailabilityAfter(any(LocalDateTime.class), anyInt());
         verifyNoMoreInteractions(agendaServiceMock);
     }
 
@@ -35,14 +37,14 @@ public class DayControllerTest {
     public void nextDayWithAvailableSlot_noNextAvailable_throws_notFound() {
         DayController controller = new DayController(agendaServiceMock);
 
-        controller.nextDayWithAvailableSlot(false);
+        controller.nextDayWithAvailableSlot(false, 0);
     }
 
     @Test(expected = NotFoundException.class)
     public void nextDayWithAvailableSlot_nullNextAvailable_throws_notFound() {
         DayController controller = new DayController(agendaServiceMock);
 
-        controller.nextDayWithAvailableSlot(null);
+        controller.nextDayWithAvailableSlot(null, 0);
     }
 
 }
