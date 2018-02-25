@@ -28,7 +28,7 @@ public class DayController {
         throw new NotFoundException();
     }
 
-    @PostMapping(value = "/slot/book", consumes = "application/json;charset=UTF-8")
+    @PostMapping(value = "/slots", consumes = "application/json;charset=UTF-8")
     public void doBooking(@RequestBody() BookingRequest bookingRequest){
         agendaService.doBooking(bookingRequest);
     }
