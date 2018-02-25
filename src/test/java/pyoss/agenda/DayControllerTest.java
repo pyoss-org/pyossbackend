@@ -17,9 +17,13 @@ public class DayControllerTest {
     @Mock
     private AgendaService agendaServiceMock;
 
+    @Mock
+    private Day dayMock;
+
     @Test
     public void nextDayWithAvailableSlot_nextAvailable_callsServices_firstDayWithAvailabilityAfter() {
         DayController controller = new DayController(agendaServiceMock);
+        when(agendaServiceMock.firstDayWithAvailabilityAfter(any(LocalDateTime.class))).thenReturn(dayMock);
 
         controller.nextDayWithAvailableSlot(true);
 
