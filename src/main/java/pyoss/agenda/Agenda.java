@@ -67,10 +67,7 @@ public class Agenda {
     }
 
     public void doBooking(BookingRequest bookingRequest) {
-        LocalDate dateToBook = LocalDate.now();//TODO should come from request
-        if(!isBeforeClosing(LocalDateTime.now())){
-            dateToBook = dateToBook.plusDays(1);//wont be necessary. te
-        }
+        LocalDate dateToBook = bookingRequest.date();
         Day day = getOrCreate(dateToBook);
         day.book(bookingRequest);
         if(!days.contains(day)){
