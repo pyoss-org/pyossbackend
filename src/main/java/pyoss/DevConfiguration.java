@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @org.springframework.context.annotation.Configuration
 @Profile("dev")
 @EnableWebMvc
-public class StubConfiguration {
+public class DevConfiguration {
 
 
     @Bean

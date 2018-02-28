@@ -16,7 +16,7 @@ public class Agenda {
     private String ownerName;
     private List<Day> days;
 
-    public Agenda(String ownerName, List<Day> days) {
+    private Agenda(String ownerName, List<Day> days) {
         this.ownerName = ownerName;
         this.days = days;
     }

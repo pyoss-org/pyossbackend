@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static pyoss.pages.Pager.createPageFor;
 import static pyoss.pages.Pager.onePageRequest;

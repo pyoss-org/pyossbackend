@@ -1,30 +1,10 @@
 package pyoss.agenda;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Component;
+public interface AgendaRepository {
 
-@Component
-public class AgendaRepository {
+    Agenda getFor(String ownerName);
 
-    private static final String COLLECTION_NAME = "agendas";
+    void insert(Agenda agenda);
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
-
-    public Agenda getFor(String ownerName) {
-        Query ownerQuery = new Query().addCriteria(Criteria.where("ownerName").is(ownerName));
-        return mongoTemplate.findOne(ownerQuery, Agenda.class, COLLECTION_NAME);
-    }
-
-    public void insert(Agenda agenda) {
-        mongoTemplate.insert(agenda, COLLECTION_NAME);
-    }
-
-    public void update(Agenda agenda) {
-        mongoTemplate.save(agenda, COLLECTION_NAME);
-    }
+    void update(Agenda agenda);
 }

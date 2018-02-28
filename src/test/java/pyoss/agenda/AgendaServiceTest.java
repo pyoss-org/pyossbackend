@@ -17,7 +17,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@ActiveProfiles("dev")
+@ActiveProfiles("inmemory")
 @SpringBootTest
 public class AgendaServiceTest {
 
@@ -47,12 +47,6 @@ public class AgendaServiceTest {
         assertEquals(existing.getId(), created.getId());
     }
 
-    @Test
-    public void getOrCreate_new() {
-        Agenda agenda = createNew();
-        Agenda agenda2 = createNew();
-        assertNotEquals(agenda.getId(), agenda2.getId());
-    }
 
     @Test
     public void dayPageWithAvailabilityAfter_today_generatesToday() {
