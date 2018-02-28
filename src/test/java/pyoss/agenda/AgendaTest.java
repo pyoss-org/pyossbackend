@@ -31,7 +31,7 @@ public class AgendaTest {
     }
 
     private Agenda createEmptyAgenda() {
-        return Agenda.createForOwner("doesntmatter");
+            return Agenda.createForOwner("doesntmatter");
     }
 
     private int daysUntil(Day day) {

@@ -21,6 +21,8 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class AgendaServiceTest {
 
+    LocalDateTime todayBeforeClosing = LocalDateTime.now().withHour(12);
+
     @Autowired
     private AgendaService agendaService;
 
@@ -54,13 +56,13 @@ public class AgendaServiceTest {
 
     @Test
     public void dayPageWithAvailabilityAfter_today_generatesToday() {
-        Page<Day> page = agendaService.dayPageWithAvailabilityAfter(LocalDateTime.now(), 0);
+        Page<Day> page = agendaService.dayPageWithAvailabilityAfter(todayBeforeClosing, 0);
         assertEpochDay(now(), firstDateIn(page));
     }
 
     @Test
     public void dayPageWithAvailabilityAfter_today_generatesTomorrow() {
-        Page<Day> page = agendaService.dayPageWithAvailabilityAfter(LocalDateTime.now(), 1);
+        Page<Day> page = agendaService.dayPageWithAvailabilityAfter(todayBeforeClosing, 1);
         assertEpochDay(now().plusDays(1), firstDateIn(page));
     }
 

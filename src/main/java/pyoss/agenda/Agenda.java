@@ -47,7 +47,7 @@ public class Agenda {
 
     public Day firstAvailableDayAfter(LocalDateTime check) {
         LocalDate dateToCheck = check.toLocalDate();
-        if (isBeforeClosing(check)) {
+        if (!isBeforeClosing(check)) {
             dateToCheck = dateToCheck.plusDays(1);
         }
 
