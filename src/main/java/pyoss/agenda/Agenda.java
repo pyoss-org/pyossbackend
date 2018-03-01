@@ -1,5 +1,8 @@
 package pyoss.agenda;
 
+import pyoss.admin.config.SlotConfiguration;
+import pyoss.agenda.booking.BookingRequest;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,20 +12,20 @@ import java.util.Optional;
 
 public class Agenda {
 
+    private SlotConfiguration config;
 
-    private int openingTime = 9;
-    private int closingTime = 17;
     private String id;
     private String ownerName;
     private List<Day> days;
 
-    private Agenda(String ownerName, List<Day> days) {
+    private Agenda(SlotConfiguration config, String ownerName, List<Day> days) {
+        this.config = config;
         this.ownerName = ownerName;
         this.days = days;
     }
 
     public static Agenda createForOwner(String ownerName) {
-        return new Agenda(ownerName, new ArrayList<>());
+        return new Agenda(SlotConfiguration.createDefault(), ownerName, new ArrayList<>());
     }
 
     public String ownerName() {
@@ -46,17 +49,8 @@ public class Agenda {
     }
 
     public Day firstAvailableDayAfter(LocalDateTime check) {
-        LocalDate dateToCheck = check.toLocalDate();
-        if (!isBeforeClosing(check)) {
-            dateToCheck = dateToCheck.plusDays(1);
-        }
+        return AvailableDayFinder.firstAvailableAfter(check, days, config);
 
-        Day day = getOrCreate(dateToCheck);
-        while(!day.hasAvailableSlot()){
-            dateToCheck = dateToCheck.plusDays(1);
-            day = getOrCreate(dateToCheck);
-        }
-        return day;
     }
 
     public List<Day> availableDaysAfter(LocalDateTime check) {
@@ -65,18 +59,14 @@ public class Agenda {
 
     private Day getOrCreate(LocalDate localDate) {
         return dayInAgenda(localDate)
-                .orElseGet(() -> Day.createFor(localDate, openingTime, closingTime));
-    }
-
-    private boolean isBeforeClosing(LocalDateTime check) {
-        return check.getHour() < closingTime;
+                .orElseGet(() -> DayCreator.createFor(localDate, config));
     }
 
     public void doBooking(BookingRequest bookingRequest) {
         LocalDate dateToBook = bookingRequest.date();
         Day day = getOrCreate(dateToBook);
         day.book(bookingRequest);
-        if(!days.contains(day)){
+        if (!days.contains(day)) {
             days.add(day);
         }
     }
@@ -85,5 +75,14 @@ public class Agenda {
         return days.stream()
                 .filter(day -> day.getDate().equals(dateToBook))
                 .findFirst();
+    }
+
+    public SlotConfiguration config() {
+        return config;
+
+    }
+
+    public void setConfig(SlotConfiguration config) {
+        this.config = config;
     }
 }

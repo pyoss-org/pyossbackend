@@ -3,16 +3,20 @@ package pyoss.agenda;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import pyoss.ContextProvider;
+import pyoss.agenda.booking.BookingRequest;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static pyoss.pages.Pager.createPageFor;
 import static pyoss.pages.Pager.onePageRequest;
 
 @Service
-public class AgendaService {
+public class AgendaApplicationService {
 
-    private static final String OWNER_NAME = "kapperx";
+    @Autowired
+    private ContextProvider contextProvider;
 
     @Autowired
     private AgendaRepository agendaRepository;
@@ -21,7 +25,23 @@ public class AgendaService {
         return agenda().firstAvailableDayAfter(check);
     }
 
-    Agenda getOrCreateAgendaFor(String ownerName) {
+
+    public void doBooking(BookingRequest bookingRequest) {
+        Agenda agenda = agenda();
+        agenda.doBooking(bookingRequest);
+        agendaRepository.update(agenda);
+    }
+
+    public Page<Day> dayPageWithAvailabilityAfter(LocalDateTime check, int offset) {
+        List<Day> availableDays = agenda().availableDaysAfter(check.plusDays(offset));
+        return createPageFor(onePageRequest(offset), availableDays);
+    }
+
+    private Agenda agenda() {
+        return getAgendaFor(contextProvider.getOwnerName());
+    }
+
+    Agenda getAgendaFor(String ownerName) {
         Agenda existingAgenda = agendaRepository.getFor(ownerName);
         if (existingAgenda == null) {
             Agenda createdAgenda = Agenda.createForOwner(ownerName);
@@ -31,19 +51,4 @@ public class AgendaService {
             return existingAgenda;
         }
     }
-
-    public void doBooking(BookingRequest bookingRequest) {
-        Agenda agenda = agenda();
-        agenda.doBooking(bookingRequest);
-        agendaRepository.update(agenda);
-    }
-
-    public Page<Day> dayPageWithAvailabilityAfter(LocalDateTime check, int offset) {
-        return createPageFor(onePageRequest(offset), agenda().availableDaysAfter(check.plusDays(offset)));
-    }
-
-    private Agenda agenda() {
-        return getOrCreateAgendaFor(OWNER_NAME);
-    }
-
 }

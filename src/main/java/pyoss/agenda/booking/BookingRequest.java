@@ -1,4 +1,4 @@
-package pyoss.agenda;
+package pyoss.agenda.booking;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;

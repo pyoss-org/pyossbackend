@@ -18,17 +18,17 @@ public class DayController {
 
     static final String PATH = "days";
 
-    private final AgendaService agendaService;
+    private final AgendaApplicationService agendaApplicationService;
 
     @Autowired
-    public DayController(AgendaService agendaService) {
-        this.agendaService = agendaService;
+    public DayController(AgendaApplicationService agendaApplicationService) {
+        this.agendaApplicationService = agendaApplicationService;
     }
 
     @GetMapping
     public Page<Day> nextDayWithAvailableSlot(@RequestParam("next") Boolean showNextAvailable, @RequestParam("page") Integer page) {
         if (!isNull(showNextAvailable) && showNextAvailable) {
-            return agendaService.dayPageWithAvailabilityAfter(LocalDateTime.now(), page);
+            return agendaApplicationService.dayPageWithAvailabilityAfter(LocalDateTime.now(), page);
         }
         throw new NotFoundException();
     }

@@ -14,17 +14,18 @@ import java.util.UUID;
 
 import static java.time.LocalDate.now;
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("inmemory")
 @SpringBootTest
-public class AgendaServiceTest {
+public class AgendaApplicationServiceTest {
 
     LocalDateTime todayBeforeClosing = LocalDateTime.now().withHour(12);
 
     @Autowired
-    private AgendaService agendaService;
+    private AgendaApplicationService agendaApplicationService;
 
     private void assertEpochDay(LocalDate expected, LocalDate actual) {
         assertEquals(expected.toEpochDay(), actual.toEpochDay());
@@ -42,21 +43,21 @@ public class AgendaServiceTest {
     @Test
     public void getOrCreate_existing_getsExisting() {
         String randomOwnerName = UUID.randomUUID().toString();
-        Agenda created = agendaService.getOrCreateAgendaFor(randomOwnerName);
-        Agenda existing = agendaService.getOrCreateAgendaFor(randomOwnerName);
+        Agenda created = agendaApplicationService.getAgendaFor(randomOwnerName);
+        Agenda existing = agendaApplicationService.getAgendaFor(randomOwnerName);
         assertEquals(existing.getId(), created.getId());
     }
 
 
     @Test
     public void dayPageWithAvailabilityAfter_today_generatesToday() {
-        Page<Day> page = agendaService.dayPageWithAvailabilityAfter(todayBeforeClosing, 0);
+        Page<Day> page = agendaApplicationService.dayPageWithAvailabilityAfter(todayBeforeClosing, 0);
         assertEpochDay(now(), firstDateIn(page));
     }
 
     @Test
     public void dayPageWithAvailabilityAfter_today_generatesTomorrow() {
-        Page<Day> page = agendaService.dayPageWithAvailabilityAfter(todayBeforeClosing, 1);
+        Page<Day> page = agendaApplicationService.dayPageWithAvailabilityAfter(todayBeforeClosing, 1);
         assertEpochDay(now().plusDays(1), firstDateIn(page));
     }
 
@@ -69,6 +70,6 @@ public class AgendaServiceTest {
     }
 
     private Agenda createNew() {
-        return agendaService.getOrCreateAgendaFor(UUID.randomUUID().toString());
+        return agendaApplicationService.getAgendaFor(UUID.randomUUID().toString());
     }
 }

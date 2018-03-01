@@ -1,6 +1,7 @@
 package pyoss.agenda;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import pyoss.agenda.booking.BookingRequest;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

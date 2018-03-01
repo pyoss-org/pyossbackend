@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 public class DayControllerTest {
 
     @Mock
-    private AgendaService agendaServiceMock;
+    private AgendaApplicationService agendaApplicationServiceMock;
 
     @Mock
     private Page<Day> pageMock;
@@ -24,25 +24,25 @@ public class DayControllerTest {
     @Test
 
     public void nextDayWithAvailableSlot_nextAvailable_callsServices_firstDayWithAvailabilityAfter() {
-        DayController controller = new DayController(agendaServiceMock);
-        when(agendaServiceMock.dayPageWithAvailabilityAfter(any(LocalDateTime.class), anyInt())).thenReturn(pageMock);
+        DayController controller = new DayController(agendaApplicationServiceMock);
+        when(agendaApplicationServiceMock.dayPageWithAvailabilityAfter(any(LocalDateTime.class), anyInt())).thenReturn(pageMock);
 
         controller.nextDayWithAvailableSlot(true, 0);
 
-        verify(agendaServiceMock, times(1)).dayPageWithAvailabilityAfter(any(LocalDateTime.class), anyInt());
-        verifyNoMoreInteractions(agendaServiceMock);
+        verify(agendaApplicationServiceMock, times(1)).dayPageWithAvailabilityAfter(any(LocalDateTime.class), anyInt());
+        verifyNoMoreInteractions(agendaApplicationServiceMock);
     }
 
     @Test(expected = NotFoundException.class)
     public void nextDayWithAvailableSlot_noNextAvailable_throws_notFound() {
-        DayController controller = new DayController(agendaServiceMock);
+        DayController controller = new DayController(agendaApplicationServiceMock);
 
         controller.nextDayWithAvailableSlot(false, 0);
     }
 
     @Test(expected = NotFoundException.class)
     public void nextDayWithAvailableSlot_nullNextAvailable_throws_notFound() {
-        DayController controller = new DayController(agendaServiceMock);
+        DayController controller = new DayController(agendaApplicationServiceMock);
 
         controller.nextDayWithAvailableSlot(null, 0);
     }
