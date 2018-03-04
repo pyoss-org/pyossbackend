@@ -3,6 +3,7 @@ package pyoss.agenda;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class TimeSlot {
@@ -42,5 +43,9 @@ public class TimeSlot {
 
     public boolean isAvailable() {
         return available;
+    }
+
+    public int lengthInMinutes() {
+        return (int) ChronoUnit.MINUTES.between(from, to);
     }
 }
