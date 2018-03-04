@@ -1,7 +1,9 @@
 package pyoss.admin.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -13,7 +15,13 @@ public class SlotConfiguration {
     private int closingTime;
     private int minutesPerSlot;
 
-    public SlotConfiguration(int openingTime, int closingTime, int minutesPerSlot) {
+
+    @JsonCreator
+    public SlotConfiguration(
+            @JsonProperty("openingTime") int openingTime,
+            @JsonProperty("closingTime") int closingTime,
+            @JsonProperty("minutesPerSlot") int minutesPerSlot
+    ) {
         this.openingTime = openingTime;
         this.closingTime = closingTime;
         this.minutesPerSlot = minutesPerSlot;
@@ -33,6 +41,11 @@ public class SlotConfiguration {
 
     public int getClosingTime() {
         return closingTime;
+    }
+
+
+    public int getMinutesPerSlot() {
+        return minutesPerSlot;
     }
 
     public void setOpeningTime(int openingTime) {

@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class AgendaRepositoryImpl implements AgendaRepository{
 
@@ -15,9 +17,9 @@ public class AgendaRepositoryImpl implements AgendaRepository{
     private MongoTemplate mongoTemplate;
 
 
-    public Agenda getFor(String ownerName) {
+    public Optional<Agenda> getFor(String ownerName) {
         Query ownerQuery = new Query().addCriteria(Criteria.where("ownerName").is(ownerName));
-        return mongoTemplate.findOne(ownerQuery, Agenda.class, COLLECTION_NAME);
+        return Optional.ofNullable(mongoTemplate.findOne(ownerQuery, Agenda.class, COLLECTION_NAME));
     }
 
     public void insert(Agenda agenda) {

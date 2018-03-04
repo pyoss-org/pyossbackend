@@ -24,6 +24,9 @@ public class ConfigApplicationService {
     }
 
     public SlotConfiguration getConfig() {
-        return configRepository.getFor(contextProvider.getOwnerName());
+        return configRepository.getFor(contextProvider.getOwnerName()).orElseThrow(NoConfigForOwner::new);
+    }
+
+    private class NoConfigForOwner extends RuntimeException {
     }
 }

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import pyoss.agenda.Agenda;
 import pyoss.agenda.AgendaRepository;
 
+import java.util.Optional;
+
 @Component
 public class ConfigRepositoryImpl implements ConfigRepository {
 
@@ -13,16 +15,21 @@ public class ConfigRepositoryImpl implements ConfigRepository {
     private AgendaRepository agendaRepository;
 
 
-    public SlotConfiguration getFor(String ownerName) {
-        return agendaRepository.getFor(ownerName).config();
+    public Optional<SlotConfiguration> getFor(String ownerName) {
+        return agendaRepository.getFor(ownerName).map(Agenda::config);
     }
 
 
     @Override
     public void update(SlotConfiguration config, String ownerName) {
-        Agenda agenda = agendaRepository.getFor(ownerName);
+        Agenda agenda = agendaRepository.getFor(ownerName).orElseThrow(() -> new AgendaOwnerDoesNotExist(ownerName));
         agenda.setConfig(config);
         agendaRepository.update(agenda);
     }
 
+    private class AgendaOwnerDoesNotExist extends RuntimeException {
+        public AgendaOwnerDoesNotExist(String ownerName) {
+            super(ownerName);
+        }
+    }
 }

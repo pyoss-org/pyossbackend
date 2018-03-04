@@ -7,6 +7,7 @@ import pyoss.agenda.AgendaRepository;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @org.springframework.context.annotation.Configuration
 @Profile("inmemory")
@@ -19,8 +20,8 @@ public class InmemoryConfiguration {
             private final Map<String, Agenda> ownerAgendas = new HashMap<>();
 
             @Override
-            public Agenda getFor(String ownerName) {
-                return ownerAgendas.computeIfAbsent(ownerName, (oN) -> Agenda.createForOwner(ownerName));
+            public Optional<Agenda> getFor(String ownerName) {
+                return Optional.of(ownerAgendas.computeIfAbsent(ownerName, (oN) -> Agenda.createForOwner(ownerName)));
             }
 
             @Override

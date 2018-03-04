@@ -8,6 +8,7 @@ import pyoss.agenda.booking.BookingRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static pyoss.pages.Pager.createPageFor;
 import static pyoss.pages.Pager.onePageRequest;
@@ -42,13 +43,13 @@ public class AgendaApplicationService {
     }
 
     Agenda getAgendaFor(String ownerName) {
-        Agenda existingAgenda = agendaRepository.getFor(ownerName);
-        if (existingAgenda == null) {
-            Agenda createdAgenda = Agenda.createForOwner(ownerName);
-            agendaRepository.insert(createdAgenda);
-            return createdAgenda;
-        } else {
-            return existingAgenda;
-        }
+        Optional<Agenda> existingAgenda = agendaRepository.getFor(ownerName);
+        return existingAgenda.orElseGet(() -> createNewAgendaFor(ownerName));
+    }
+
+    private Agenda createNewAgendaFor(String ownerName) {
+        Agenda createdAgenda = Agenda.createForOwner(ownerName);
+        agendaRepository.insert(createdAgenda);
+        return createdAgenda;
     }
 }

@@ -1,8 +1,10 @@
 package pyoss.agenda;
 
+import java.util.Optional;
+
 public interface AgendaRepository {
 
-    Agenda getFor(String ownerName);
+    Optional<Agenda> getFor(String ownerName);
 
     void insert(Agenda agenda);
 
