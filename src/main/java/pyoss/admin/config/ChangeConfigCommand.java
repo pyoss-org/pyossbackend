@@ -2,11 +2,11 @@ package pyoss.admin.config;
 
 public class ChangeConfigCommand {
 
-    private final int openingHour;
-    private final int closingHour;
-    private final int minutesPerSlot;
+    private final Integer openingHour;
+    private final Integer closingHour;
+    private final Integer minutesPerSlot;
 
-    public ChangeConfigCommand(int openingHour, int closingHour, int minutesPerSlot) {
+    public ChangeConfigCommand(Integer openingHour, Integer closingHour, Integer minutesPerSlot) {
         this.openingHour = openingHour;
         this.closingHour = closingHour;
         this.minutesPerSlot = minutesPerSlot;

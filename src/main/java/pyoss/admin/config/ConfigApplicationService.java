@@ -10,6 +10,7 @@ public class ConfigApplicationService {
 
     @Autowired
     private ConfigRepository configRepository;
+
     @Autowired
     private ContextProvider contextProvider;
 

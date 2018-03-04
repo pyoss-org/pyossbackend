@@ -1,6 +1,7 @@
 package pyoss.admin.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,9 +23,8 @@ public class ConfigController {
 
     }
 
-    @PostMapping(consumes = "application/json;charset=UTF-8")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public void update(@RequestBody() ChangeConfigRequest changeConfigRequest) {
-        //TODO frontend doesnt send changed values
         ChangeConfigCommand command = ChangeConfigCommand.from(changeConfigRequest);
         configApplicationService.updateConfig(command);
     }

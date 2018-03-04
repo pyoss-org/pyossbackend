@@ -15,7 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebMvc
 public class DevConfiguration {
 
-
     @Bean
     public MongoTemplate mongoTemplate() {
         return new MongoTemplate(mongo(), "dev");

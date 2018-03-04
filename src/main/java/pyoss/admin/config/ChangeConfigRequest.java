@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ChangeConfigRequest {
-    private final int closingTime;
-    private final int openingTime;
-    private final int minutesPerSlot;
+    private final Integer closingTime;
+    private final Integer openingTime;
+    private final Integer minutesPerSlot;
 
     @JsonCreator
-    public ChangeConfigRequest(@JsonProperty("closingTime") int closingTime,
-                               @JsonProperty("openingTime") int openingTime,
-                               @JsonProperty("minutesPerSlot") int minutesPerSlot
+    public ChangeConfigRequest(@JsonProperty("closingTime") Integer closingTime,
+                               @JsonProperty("openingTime") Integer openingTime,
+                               @JsonProperty("minutesPerSlot") Integer minutesPerSlot
     ) {
         this.closingTime = closingTime;
         this.openingTime = openingTime;
