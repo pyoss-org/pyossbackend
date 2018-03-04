@@ -8,12 +8,15 @@ import pyoss.ContextProvider;
 public class ConfigApplicationService {
 
 
-    @Autowired
-    private ConfigRepository configRepository;
+    private final ConfigRepository configRepository;
+
+    private final ContextProvider contextProvider;
 
     @Autowired
-    private ContextProvider contextProvider;
-
+    public ConfigApplicationService(ConfigRepository configRepository, ContextProvider contextProvider) {
+        this.configRepository = configRepository;
+        this.contextProvider = contextProvider;
+    }
 
     public void updateConfig(ChangeConfigCommand command) {
         SlotConfiguration config = SlotConfiguration.createFor(command.getOpeningHour(), command.getClosingHour(), command.getMinutesPerSlot());

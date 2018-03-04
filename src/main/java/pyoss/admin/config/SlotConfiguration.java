@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class SlotConfiguration {
@@ -46,5 +47,20 @@ public class SlotConfiguration {
     public boolean isAfterClosing(LocalDateTime check) {
         return check.getHour() >=
                 closingTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SlotConfiguration that = (SlotConfiguration) o;
+        return openingTime == that.openingTime &&
+                closingTime == that.closingTime &&
+                minutesPerSlot == that.minutesPerSlot;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(openingTime, closingTime, minutesPerSlot);
     }
 }
